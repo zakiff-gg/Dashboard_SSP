@@ -1,7 +1,7 @@
 import { useEffect, useMemo, useState } from "react";
 import { api } from "../api.js";
 import { useToast } from "./Toast.jsx";
-import { SkeletonTable } from "./AbsensiTab.jsx";
+import { SkeletonTable } from "./Skeleton.jsx";
 
 const formatRupiah = (n) => "Rp " + Math.round(n || 0).toLocaleString("id-ID");
 

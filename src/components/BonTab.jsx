@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import { api } from "../api.js";
 import { useToast } from "./Toast.jsx";
 import { useConfirm } from "./ConfirmDialog.jsx";
-import { SkeletonTable } from "./AbsensiTab.jsx";
+import { SkeletonTable } from "./Skeleton.jsx";
 
 const formatRupiah = (n) => "Rp " + Number(n || 0).toLocaleString("id-ID");
 

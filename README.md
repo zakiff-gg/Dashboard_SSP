@@ -11,8 +11,15 @@ Tersedia 5 modul:
 - **Operasional** — lihat semua laporan kas masuk/keluar, edit data yang salah.
 - **Invoice** — lihat semua invoice (dengan indikator telat jatuh tempo), edit
   data invoice, dan catat pembayaran baru (cicilan/lunas).
-- **Absensi** — cari & lihat riwayat absen (nama/rentang tanggal), edit Jam
-  Lembur langsung dari dashboard (tidak perlu buka Google Sheets lagi).
+- **Absensi** — punya 2 sub-tab:
+  - **Rekap Bulanan**: format matriks (karyawan × tanggal, seperti rekap manual
+    di Excel) dengan filter "dari tanggal – sampai tanggal", ✓ untuk hari
+    penuh (+ angka kecil oranye kalau ada jam lembur hari itu), ½ untuk
+    setengah hari, kolom Total Hari & Jam Lembur otomatis terhitung. Ada
+    tombol **Export Excel** dan **Export PDF** (diunduh langsung dari
+    browser, tidak perlu server tambahan).
+  - **Detail & Edit Lembur**: daftar mentah per baris (seperti sebelumnya),
+    untuk cari & edit Jam Lembur satu per satu.
 - **Gaji** — estimasi gaji per karyawan (Hari Masuk × Upah Harian + Jam Lembur
   × Upah Lembur − Bon Diterima), dengan opsi edit Upah Harian/Lembur per orang.
 
@@ -105,8 +112,11 @@ ter-deploy ulang — tidak perlu upload manual lagi.
 - Tab **Invoice**: baris jatuh tempo yang sudah lewat & belum lunas otomatis
   ditandai merah. Klik "Edit" untuk membetulkan data, atau "+ Bayar" untuk
   mencatat pembayaran baru (status Sebagian/Lunas terhitung otomatis).
-- Tab **Absensi**: cari nama/rentang tanggal, klik "Edit Lembur" untuk isi Jam
-  Lembur baris tsb (langsung berpengaruh ke tab Gaji).
+- Tab **Absensi**:
+  - **Rekap Bulanan**: atur rentang tanggal, klik "Terapkan", lalu "Export
+    Excel"/"Export PDF" untuk unduh rekapnya.
+  - **Detail & Edit Lembur**: cari nama/rentang tanggal, klik "Edit Lembur"
+    untuk isi Jam Lembur baris tsb (langsung berpengaruh ke tab Gaji & Rekap).
 - Tab **Gaji**: klik "Edit Upah" untuk ubah Upah Harian/Lembur seorang
   karyawan — perubahan berlaku untuk perhitungan gaji & batas bon berikutnya.
 
