@@ -6,11 +6,18 @@ Google Apps Script yang **sama** dengan aplikasi Android (`Code.gs` dan
 `InvoiceCode.gs`), tidak perlu server tambahan, dan hosting-nya **gratis**
 lewat GitHub Pages.
 
-Tersedia 3 modul:
+Tersedia 5 modul:
 - **Bon** — lihat semua pengajuan bon, tandai "Cair" (approve pencairan).
 - **Operasional** — lihat semua laporan kas masuk/keluar, edit data yang salah.
 - **Invoice** — lihat semua invoice (dengan indikator telat jatuh tempo), edit
   data invoice, dan catat pembayaran baru (cicilan/lunas).
+- **Absensi** — cari & lihat riwayat absen (nama/rentang tanggal), edit Jam
+  Lembur langsung dari dashboard (tidak perlu buka Google Sheets lagi).
+- **Gaji** — estimasi gaji per karyawan (Hari Masuk × Upah Harian + Jam Lembur
+  × Upah Lembur − Bon Diterima), dengan opsi edit Upah Harian/Lembur per orang.
+
+Juga ada ringkasan (KPI) di atas: jumlah karyawan aktif, bon menunggu, invoice
+telat, dan total saldo operasional — dengan animasi angka berjalan.
 
 ---
 
@@ -23,7 +30,12 @@ file barunya sendiri yang saya sertakan terpisah dari folder ini:
 1. Buka Google Sheet yang sudah dipakai aplikasi Android Anda untuk modul ini.
 2. Extensions > Apps Script.
 3. Select all isi `Code.gs` lama, hapus, ganti dengan isi `Code.gs` baru
-   (endpoint lama untuk Android **tidak berubah sama sekali**).
+   (endpoint lama untuk Android **tidak berubah sama sekali**; ada tambahan
+   endpoint dashboard: `adminLogin`, `getBonAll`, `cairkanBon`,
+   `getOperasionalAll`, `editOperasionalAdmin`, `editJamLembur`,
+   `editUpahKaryawan`, dan `searchHistory` sekarang ikut mengirim `rowIndex` +
+   `jamLembur` per baris — aman, ini cuma field tambahan di response JSON yang
+   sudah publik, tidak menghapus field lama).
 4. Ikon gerigi **"Project Settings"** > **Script Properties** > **Add script property**:
    - Property: `ADMIN_DASHBOARD_PASSWORD`
    - Value: password pilihan Anda, mis. `SspAdmin2026!`
@@ -93,6 +105,10 @@ ter-deploy ulang — tidak perlu upload manual lagi.
 - Tab **Invoice**: baris jatuh tempo yang sudah lewat & belum lunas otomatis
   ditandai merah. Klik "Edit" untuk membetulkan data, atau "+ Bayar" untuk
   mencatat pembayaran baru (status Sebagian/Lunas terhitung otomatis).
+- Tab **Absensi**: cari nama/rentang tanggal, klik "Edit Lembur" untuk isi Jam
+  Lembur baris tsb (langsung berpengaruh ke tab Gaji).
+- Tab **Gaji**: klik "Edit Upah" untuk ubah Upah Harian/Lembur seorang
+  karyawan — perubahan berlaku untuk perhitungan gaji & batas bon berikutnya.
 
 ---
 

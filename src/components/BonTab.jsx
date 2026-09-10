@@ -1,9 +1,14 @@
 import { useEffect, useState } from "react";
 import { api } from "../api.js";
+import { useToast } from "./Toast.jsx";
+import { useConfirm } from "./ConfirmDialog.jsx";
+import { SkeletonTable } from "./AbsensiTab.jsx";
 
 const formatRupiah = (n) => "Rp " + Number(n || 0).toLocaleString("id-ID");
 
 export default function BonTab({ password }) {
+  const toast = useToast();
+  const confirm = useConfirm();
   const [bon, setBon] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
@@ -33,17 +38,19 @@ export default function BonTab({ password }) {
   }, []);
 
   async function handleCairkan(rowIndex) {
-    if (!confirm("Tandai bon ini sebagai CAIR? Aksi ini tidak bisa dibatalkan dari sini.")) return;
+    const ok = await confirm("Tandai bon ini sebagai CAIR? Aksi ini tidak bisa dibatalkan dari sini.");
+    if (!ok) return;
     setProcessingRow(rowIndex);
     try {
       const res = await api.cairkanBon(password, rowIndex);
       if (res.status === "SUKSES") {
+        toast.success("Bon berhasil ditandai cair.");
         await load();
       } else {
-        alert(res.pesan || "Gagal mencairkan bon.");
+        toast.error(res.pesan || "Gagal mencairkan bon.");
       }
     } catch (err) {
-      alert("Gagal terhubung ke server: " + err.message);
+      toast.error("Gagal terhubung ke server: " + err.message);
     } finally {
       setProcessingRow(null);
     }
@@ -69,49 +76,53 @@ export default function BonTab({ password }) {
 
       {error && <div className="error-text">{error}</div>}
 
-      <table>
-        <thead>
-          <tr>
-            <th>Nama</th>
-            <th>Tanggal Pengajuan</th>
-            <th>Jumlah</th>
-            <th>Status</th>
-            <th>Tanggal Cair</th>
-            <th></th>
-          </tr>
-        </thead>
-        <tbody>
-          {shown.map((b) => (
-            <tr key={b.rowIndex}>
-              <td>{b.nama}</td>
-              <td>{b.tanggalPengajuan}</td>
-              <td>{formatRupiah(b.jumlah)}</td>
-              <td>
-                <span className={`badge ${b.status === "Cair" ? "badge-green" : "badge-yellow"}`}>{b.status}</span>
-              </td>
-              <td>{b.tanggalCair || "-"}</td>
-              <td>
-                {b.status !== "Cair" && (
-                  <button
-                    className="action-btn"
-                    disabled={processingRow === b.rowIndex}
-                    onClick={() => handleCairkan(b.rowIndex)}
-                  >
-                    {processingRow === b.rowIndex ? "Memproses..." : "Cairkan"}
-                  </button>
-                )}
-              </td>
-            </tr>
-          ))}
-          {!loading && shown.length === 0 && (
+      {loading ? (
+        <SkeletonTable cols={6} />
+      ) : (
+        <table>
+          <thead>
             <tr>
-              <td colSpan={6} className="muted center">
-                Tidak ada data.
-              </td>
+              <th>Nama</th>
+              <th>Tanggal Pengajuan</th>
+              <th>Jumlah</th>
+              <th>Status</th>
+              <th>Tanggal Cair</th>
+              <th></th>
             </tr>
-          )}
-        </tbody>
-      </table>
+          </thead>
+          <tbody>
+            {shown.map((b, idx) => (
+              <tr key={b.rowIndex} className="row-in" style={{ animationDelay: `${idx * 25}ms` }}>
+                <td>{b.nama}</td>
+                <td>{b.tanggalPengajuan}</td>
+                <td>{formatRupiah(b.jumlah)}</td>
+                <td>
+                  <span className={`badge ${b.status === "Cair" ? "badge-green" : "badge-yellow pulse"}`}>{b.status}</span>
+                </td>
+                <td>{b.tanggalCair || "-"}</td>
+                <td>
+                  {b.status !== "Cair" && (
+                    <button
+                      className="action-btn"
+                      disabled={processingRow === b.rowIndex}
+                      onClick={() => handleCairkan(b.rowIndex)}
+                    >
+                      {processingRow === b.rowIndex ? "Memproses..." : "Cairkan"}
+                    </button>
+                  )}
+                </td>
+              </tr>
+            ))}
+            {shown.length === 0 && (
+              <tr>
+                <td colSpan={6} className="muted center">
+                  Tidak ada data.
+                </td>
+              </tr>
+            )}
+          </tbody>
+        </table>
+      )}
     </div>
   );
 }
