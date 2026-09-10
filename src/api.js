@@ -9,8 +9,8 @@
 // CARA ISI: ganti nilai di bawah dengan URL Web App masing-masing (sama seperti
 // AppConstants.WEB_APP_URL dan InvoiceConfig.INVOICE_SCRIPT_URL di Android).
 // ============================================================================
-export const GAS_WEB_APP_URL = "PASTE_URL_WEB_APP_APPS_SCRIPT_DI_SINI";
-export const GAS_INVOICE_WEB_APP_URL = "PASTE_URL_WEB_APP_APPS_SCRIPT_INVOICE_DI_SINI";
+export const GAS_WEB_APP_URL = "https://script.google.com/macros/s/AKfycbzkEykXX4YXGZgAWPS_71M60_j8WaXbK5av6lyp6KAV_9BN9QxehV-jZn3xNbh5Jci9SQ/exec";
+export const GAS_INVOICE_WEB_APP_URL = "https://script.google.com/macros/s/AKfycbzAu3twqFvqTjPFbAQRSpABm3iHRprU6hixOJYQRH5VwkGxEkdhUNVyLiaKDgJZkG7r7w/exec";
 
 // --- Backend 1: Code.gs -- pakai e.parameter, jadi GET biasa & POST
 // form-urlencoded (bukan JSON custom) supaya browser TIDAK mengirim CORS
