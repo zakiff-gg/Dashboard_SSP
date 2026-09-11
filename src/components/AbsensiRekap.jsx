@@ -171,7 +171,11 @@ export default function AbsensiRekap() {
                             ✓{c.overtime > 0 && <sup className="check-overtime">{c.overtime}</sup>}
                           </span>
                         )}
-                        {c.type === "half" && <span className="half-mark">½</span>}
+                        {c.type === "half" && (
+                          <span className="half-mark">
+                            ½{c.overtime > 0 && <sup className="check-overtime">{c.overtime}</sup>}
+                          </span>
+                        )}
                       </td>
                     );
                   })}
