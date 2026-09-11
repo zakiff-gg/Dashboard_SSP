@@ -11,7 +11,6 @@
 // ============================================================================
 export const GAS_WEB_APP_URL = "https://script.google.com/macros/s/AKfycbzkEykXX4YXGZgAWPS_71M60_j8WaXbK5av6lyp6KAV_9BN9QxehV-jZn3xNbh5Jci9SQ/exec";
 export const GAS_INVOICE_WEB_APP_URL = "https://script.google.com/macros/s/AKfycbzAu3twqFvqTjPFbAQRSpABm3iHRprU6hixOJYQRH5VwkGxEkdhUNVyLiaKDgJZkG7r7w/exec";
-
 // --- Backend 1: Code.gs -- pakai e.parameter, jadi GET biasa & POST
 // form-urlencoded (bukan JSON custom) supaya browser TIDAK mengirim CORS
 // preflight (OPTIONS), yang tidak ditangani Apps Script Web App dengan baik.
@@ -65,6 +64,15 @@ export const api = {
   getOperasionalAll: (password) => gasPost("getOperasionalAll", { password }),
   editOperasionalAdmin: (password, { id, tipe, kategori, jumlah, keterangan }) =>
     gasPost("editOperasionalAdmin", { password, id, tipe, kategori, jumlah, keterangan }),
+
+  // Absensi (publik, dipakai juga oleh halaman web pencarian riwayat) + edit Jam Lembur (admin)
+  searchHistory: (nama = "", tanggalMulai = "", tanggalSelesai = "") =>
+    gasGet("searchHistory", { nama, tanggalMulai, tanggalSelesai }),
+  editJamLembur: (password, rowIndex, jamLembur) => gasPost("editJamLembur", { password, rowIndex, jamLembur }),
+
+  // Gaji: pakai data getKaryawan (agregat sudah dihitung server) + edit upah (admin)
+  editUpahKaryawan: (password, uid, upahHarian, upahLembur) =>
+    gasPost("editUpahKaryawan", { password, uid, upahHarian, upahLembur }),
 
   // Data pelengkap (endpoint publik yang sudah ada, dipakai untuk tampilkan nama dsb.)
   getKaryawan: () => gasGet("getKaryawan"),
